@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
-<body>
+<body style="background-color:powderblue;">
 
-<h2>Welcome to Karan networks</h2>
-<p>HTML buttons are defined with the button tag:</p>
-
-<button>Click hre for register</button>
+<h1 style="color:red;">Our App is under working</h1>
+<p>Thanks for connecting us.</p>
 
 </body>
 </html>
+
+
 
 
 

@@ -9,10 +9,6 @@ pipeline{
                git 'https://github.com/ranjithk9/cubegen.git'
            }  
         }
-        stage('Build'){
-            steps{
-                sh 'mvn clean package'
-            }
-        }
+        
     }    
 }        

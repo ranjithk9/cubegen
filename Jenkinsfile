@@ -4,8 +4,8 @@ pipeline{
         PATH = "$PATH:/apache-maven-3.6/bin"
     }
     tools {
-        maven 'Maven 3.6.'
-        jdk 'jdk8'
+        maven "Maven 3.6"
+        jdk "jdk8"
     }
     stages{
        stage('GetCode'){

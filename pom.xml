@@ -7,6 +7,13 @@
   <version>1.0-SNAPSHOT</version>
   <name>cubegenweb Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
+  <properties>
+    <sonar.host.url>http://http://18.236.241.155:9000/</sonar.host.url>
+    <sonar.login>username</sonar.login>
+    <sonar.password>pwd</sonar.password>
+  </properties>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -15,6 +22,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
     <finalName>cubegenweb</finalName>
   </build>

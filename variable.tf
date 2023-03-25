@@ -34,6 +34,7 @@ variable "image" {
   default     = "my-docker-image"
 }
 
+
 variable "desired_count" {
   type        = number
   description = "The number of tasks to run for the service"

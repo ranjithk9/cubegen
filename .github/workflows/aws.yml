@@ -1,43 +1,4 @@
-name: Terraform Plan and Apply
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  terraform:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.0.7
-
-      - name: Terraform init
-        run: terraform init
-      
-      - name: Terraform validate
-        run: terraform validate
-
-      - name: Terraform plan
-        id: plan
-        run: terraform plan -out=tfplan
-
-      - name: Terraform apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply tfplan
-        env:
-          TF_VAR_aws_region: us-east-1
-        # Prompt user for approval
-        with:
-          input: yes
-          
-          
-          name: Push to ECR
+name: Terraform AWS Pipeline
 
 on:
   push:
@@ -50,19 +11,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.9
 
-      - name: Login to AWS ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+      - name: Initialize Terraform
+        run: terraform init
 
-      - name: Build and tag Docker image
-        id: build-image
-        run: |
-          docker build -t my-image .
-          docker tag my-image ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:latest
+      - name: Plan Terraform
+        id: terraform-plan
+        run: terraform plan -out=tfplan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
-      - name: Push Docker image to ECR
-        id: push-image
-        run: |
-          docker push ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:latest
-
+      - name: Apply Terraform
+        run: terraform apply -auto-approve tfplan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}

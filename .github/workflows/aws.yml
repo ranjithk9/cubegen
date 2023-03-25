@@ -1,4 +1,4 @@
-name: Terraform AWS Pipeline
+name: Deploy to AWS ECS
 
 on:
   push:
@@ -6,28 +6,56 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v1
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          terraform_version: 1.0.9
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Install Terraform
+        run: |
+          wget https://releases.hashicorp.com/terraform/1.1.5/terraform_1.1.5_linux_amd64.zip
+          unzip terraform_1.1.5_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
+          terraform --version
 
       - name: Initialize Terraform
-        run: terraform init
+        run: |
+          cd infrastructure
+          terraform init
 
-             env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      - name: Plan Terraform
+        id: terraform-plan
+        run: |
+          cd infrastructure
+          terraform plan -out=tfplan
+        continue-on-error: true
 
-      - name: Apply Terraform
-        run: terraform apply -auto-approve tfplan
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      - name: Deploy Terraform
+        if: steps.terraform-plan.outputs.exit-code == 0
+        run: |
+          cd infrastructure
+          terraform apply tfplan
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: my-aws-registry/my-app:${{ github.sha }}
+
+      - name: Deploy Docker container to ECS
+        run: |
+          aws ecs update-service \
+            --cluster my-ecs-cluster \
+            --service my-ecs-service \
+            --force-new-deployment \
+            --region us-west-2

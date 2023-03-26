@@ -55,7 +55,7 @@ jobs:
       - name: Deploy Docker container to ECS
         run: |
           aws ecs update-service \
-            --cluster my-ecs-cluster \
+            --cluster killer4 \
             --service my-ecs-service \
             --force-new-deployment \
             --region us-east-1

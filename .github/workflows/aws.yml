@@ -28,6 +28,7 @@ jobs:
 
       - name: Initialize Terraform
         run: |
+          mkdir infrastructure
           cd infrastructure
           terraform init
 

@@ -40,7 +40,6 @@ jobs:
         continue-on-error: true
 
       - name: Deploy Terraform
-        if: steps.terraform-plan.outputs.exit-code == 0
         run: |
           cd infrastructure
           terraform apply 

@@ -43,7 +43,7 @@ jobs:
         if: steps.terraform-plan.outputs.exit-code == 0
         run: |
           cd infrastructure
-          terraform apply tfplan
+          terraform apply 
 
       - name: Build and push Docker image
         id: build-and-push

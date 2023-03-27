@@ -4,7 +4,7 @@ WORKDIR /app
 
 EXPOSE 80
 
-COPY lib/webapps/stella.war /app
+COPY /webapps/stella.war /app
 
 EXPOSE 8080
 

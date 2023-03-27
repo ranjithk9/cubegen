@@ -8,4 +8,4 @@ COPY /webapps/stella.war /app
 
 EXPOSE 8080
 
-ENTRYPOINT [ "java", "-jar", "stells.war" ]
+ENTRYPOINT [ "java", "-jar", "stella.war" ]

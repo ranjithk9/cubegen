@@ -4,8 +4,8 @@ WORKDIR /app
 
 EXPOSE 80
 
-COPY target/my-web-app.jar /app
+COPY target/cubegen-web-app.war /app
 
 EXPOSE 8080
 
-ENTRYPOINT [ "java", "-jar", "my-web-app.jar" ]
+ENTRYPOINT [ "java", "-jar", "cubegen-web-app.war" ]

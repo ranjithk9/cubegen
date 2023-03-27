@@ -4,8 +4,8 @@ WORKDIR /app
 
 EXPOSE 80
 
-COPY target/cubegen-web-app.war /app
+COPY lib/webapps/stella.war /app
 
 EXPOSE 8080
 
-ENTRYPOINT [ "java", "-jar", "cubegen-web-app.war" ]
+ENTRYPOINT [ "java", "-jar", "stells.war" ]

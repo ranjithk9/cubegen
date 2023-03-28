@@ -31,10 +31,10 @@ on:
     branches: [ "main" ]
 
 env:
-  AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: killer2021           # set this to your Amazon ECR repository name
+  AWS_REGION: us-west-2                  # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: killer4           # set this to your Amazon ECR repository name
   ECS_SERVICE: killer89              # set this to your Amazon ECS service name
-  ECS_CLUSTER: killer4                 # set this to your Amazon ECS cluster name
+  ECS_CLUSTER: killer2021                # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: killer5 # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: killer2021           # set this to the name of the container in the
@@ -58,7 +58,7 @@ jobs:
       with:
         aws-access-key-id: AKIAUYGKYRQC3B53TLZL
         aws-secret-access-key: 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
-        aws-region: us-east-1
+        aws-region: us-west-2
 
     - name: Login to Amazon ECR
       id: login-ecr

@@ -2,7 +2,7 @@ FROM adoptopenjdk/openjdk11
 
 WORKDIR /app
 
-EXPOSE 80
+EXPOSE 8081
 
 COPY /target/cubegenweb.war /app
 

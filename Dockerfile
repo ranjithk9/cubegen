@@ -1,10 +1,10 @@
-FROM adoptopenjdk/openjdk11
+FROM tomcat:8.2.20-
 
 WORKDIR /app
 
 EXPOSE 8081
 
-COPY /target/cubegenweb.war /app
+COPY /target/cubegenweb-app*.war /usr/local/tomcat/cubugenweb-app.war
 
 EXPOSE 8080
 

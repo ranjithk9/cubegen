@@ -1,4 +1,4 @@
-FROM tomcat:8.2.20-
+FROM tomcat:8.2.20-jre8
 
 WORKDIR /app
 
